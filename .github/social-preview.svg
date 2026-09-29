@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="Context Engineering Runtime">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1020"/>
+      <stop offset="55%" stop-color="#131a33"/>
+      <stop offset="100%" stop-color="#1b1030"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#f472b6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)"/>
+
+  <g opacity="0.10" stroke="#8ea3c9" stroke-width="1">
+    <path d="M0 120H1280M0 240H1280M0 360H1280M0 480H1280"/>
+    <path d="M160 0V640M320 0V640M480 0V640M640 0V640M800 0V640M960 0V640M1120 0V640"/>
+  </g>
+
+  <text x="80" y="118" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="30" font-weight="600" fill="#7dd3fc" letter-spacing="6">CONTEXT ENGINEERING RUNTIME</text>
+
+  <text x="80" y="196" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="64" font-weight="700" fill="#f8fafc">Context is a managed,</text>
+  <text x="80" y="268" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="64" font-weight="700" fill="#f8fafc">budgeted, evictable resource.</text>
+
+  <rect x="80" y="316" width="330" height="4" rx="2" fill="url(#accent)"/>
+
+  <text x="80" y="368" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="26" fill="#cbd5f5">Not an append-only log.</text>
+
+  <g font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif" font-size="21">
+    <rect x="80" y="410" width="250" height="46" rx="10" fill="#0f172a" stroke="#2b3a63"/>
+    <text x="102" y="440" fill="#93c5fd">cache-aware layout</text>
+    <rect x="346" y="410" width="230" height="46" rx="10" fill="#0f172a" stroke="#2b3a63"/>
+    <text x="368" y="440" fill="#c4b5fd">knapsack solver</text>
+    <rect x="592" y="410" width="230" height="46" rx="10" fill="#0f172a" stroke="#2b3a63"/>
+    <text x="614" y="440" fill="#f0abfc">legible compaction</text>
+    <rect x="838" y="410" width="270" height="46" rx="10" fill="#0f172a" stroke="#2b3a63"/>
+    <text x="860" y="440" fill="#86efac">zero vendor SDKs</text>
+  </g>
+
+  <g>
+    <rect x="80" y="500" width="700" height="18" rx="9" fill="#1e293b"/>
+    <rect x="80" y="500" width="560" height="18" rx="9" fill="url(#accent)"/>
+    <text x="800" y="516" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+          font-size="20" fill="#94a3b8">stable prefix cached on every step</text>
+  </g>
+
+  <text x="80" y="586" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="22" fill="#64748b">github.com/chiragborse1/context-engineering-runtime</text>
+</svg>
