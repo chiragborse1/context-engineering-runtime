@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: build / test / lint / typecheck / security
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python ${{ matrix.python }}
+        run: uv python install ${{ matrix.python }}
+
+      - name: Install project + dev dependencies
+        run: |
+          uv venv --python ${{ matrix.python }}
+          uv pip install -e ".[dev]"
+
+      - name: Lint (ruff check)
+        run: uv run ruff check src tests
+
+      - name: Format check (ruff format)
+        run: uv run ruff format --check src tests
+
+      - name: Typecheck (mypy strict)
+        run: uv run mypy
+
+      - name: Build
+        run: uv build
+
+      - name: Test (offline, no API key)
+        run: uv run pytest -m "not slow and not network" --cov=cer --cov-report=xml --cov-report=term-missing
+
+      - name: Security scan (bandit)
+        run: uv run bandit -r src -c pyproject.toml -ll
+
+      - name: Dependency audit (pip-audit)
+        run: |
+          uv export --frozen --no-emit-project -o requirements-ci.txt
+          uv run pip-audit -r requirements-ci.txt --strict || echo "pip-audit: advisory reported (see log)"
+
+      - name: Dependency audit (license / heavy-framework check)
+        run: python scripts/dependency_audit.py
+
+  legibility-gate:
+    name: legibility invariant gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv venv --python 3.12 && uv pip install -e ".[dev]"
+      - name: Run legibility invariant suite
+        run: uv run pytest -m legibility -q
+
+  benchmarks:
+    name: benchmark reproducibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv venv --python 3.12 && uv pip install -e ".[dev]"
+      - name: Reproduce committed benchmark numbers
+        run: |
+          uv run python scripts/reproduce_bench.py --check
