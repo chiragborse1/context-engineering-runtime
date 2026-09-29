@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Block model and token counting
+
+- `cer.block.ContextBlock`: the typed unit the runtime budgets, lays out and compacts.
+  Carries its token cost, role, pin flag, tool-pair correlation and provenance.
+- `cer.block.ROLES`: one role table driving both the cache-aware layout segment and
+  the assembler priority, so those two concerns cannot drift apart.
+- `ContextBlock.as_summary_of()` builds summaries that are legible and reversible *by
+  construction*: every summary is marked lossy and carries the transitive source
+  hashes back to the original artifacts. A summary with no retrievable source is
+  rejected rather than silently created.
+- `cer.tokens.TokenCounter` protocol with a tiktoken implementation, a deterministic
+  character-ratio fallback, and a bounded count cache.
+
 - Repository scaffold: `pyproject.toml`, Makefile, ruff / mypy strict / pytest
   configuration, pre-commit hooks, and a GitHub Actions pipeline covering build,
   test, lint, typecheck and security scan.
