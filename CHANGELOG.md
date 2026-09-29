@@ -13,7 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   configuration, pre-commit hooks, and a GitHub Actions pipeline covering build,
   test, lint, typecheck and security scan.
 - Typed exception hierarchy (`cer.errors`) and core value types (`cer.types`).
+- Single configuration object (`cer.config`) with no global mutable state.
 - Executable documentation and dependency checks under `scripts/`.
+- GitHub Actions gates for the legibility suite and benchmark reproducibility activate
+  conditionally, so a red CI always means a real regression rather than a slice that
+  has not landed yet.
 
 ### Added (planned)
 
