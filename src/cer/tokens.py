@@ -111,7 +111,7 @@ class TiktokenCounter:
         # A module-level import would take the whole runtime down with it.
         try:
             import tiktoken  # noqa: PLC0415
-        except ImportError as exc:  # pragma: no cover - tiktoken is a core dependency
+        except ImportError as exc:
             msg = "tiktoken is not installed"
             raise TokenizerError(msg, remedy="run: uv pip install tiktoken") from exc
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import builtins
+
 import pytest
 
 from cer.errors import TokenizerError
@@ -127,3 +129,23 @@ class TestDefaultCounter:
         counter = default_token_counter()
         assert isinstance(counter, HeuristicTokenCounter)
         assert counter.count(TEXT) > 0
+
+    def test_missing_tiktoken_is_actionable(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """A missing tokenizer raises a typed error, not an ImportError.
+
+        The runtime must survive a machine with no tokenizer at all, so this path
+        has to produce an actionable typed error that default_token_counter can catch.
+        """
+        real_import = builtins.__import__
+
+        def blocked(name: str, *args: object, **kwargs: object) -> object:
+            if name == "tiktoken":
+                msg = "no tiktoken"
+                raise ImportError(msg)
+            return real_import(name, *args, **kwargs)  # type: ignore[arg-type]
+
+        monkeypatch.setattr(builtins, "__import__", blocked)
+        with pytest.raises(TokenizerError) as exc:
+            TiktokenCounter()
+        assert "tiktoken" in str(exc.value)
+        assert exc.value.remedy
