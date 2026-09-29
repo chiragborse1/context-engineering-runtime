@@ -28,3 +28,7 @@ cer-work/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local PR helper files (written by the agent, never part of the repo)
+.pr-body.md
+_smoke.py
